@@ -1,7 +1,6 @@
 {
     "files.associations": {
         "info.h": "c",
-        "indicepalavras.h": "c",
         "palavra.h": "c",
         "stdio.h": "c"
     }

@@ -15,9 +15,12 @@ int main(int argc, char * argv[]) {
         sprintf(caminhoSumario, "%s", argv[1]);
     }
 
+    //Comentario apenas para teste de leitura (em indices_ler())
 
+    //Indices indices = indices_create();
+    Indices indices;
 
-    Indices indices = indices_create();
+    //printf("%s\n", caminhoSumario);
 
     indices_ler(indices, caminhoSumario);
 

@@ -1,5 +1,7 @@
 #include "indices.h"
 #include "palavra.h"
+#include <stdio.h>
+#include <string.h>
 
 struct indices {
 
@@ -25,33 +27,36 @@ Indices indices_create() {
 
 void indices_ler(Indices i, char * caminhoSumario) {
 
-    //Le os arquivos listados no sumario
-
-    /*
     FILE * sumario = fopen(caminhoSumario, "r");
 
+    //Pega a pasta_mae dentro de datasets
+    char * pasta_mae = strtok(caminhoSumario, "/");
+    pasta_mae = strtok(NULL, "/");
 
-    while (!eof(sumario)) { //esse loop passa por todos os .txt
+    while (!feof(sumario)) { //passa por todos os .txt listados
 
-        //Linha: "caminhoTexto" "classe"
-        //Ex.: train/c3719052006int.txt int
-
-        char caminhoTexto[100];
+        char caminhoRelativoTexto[100];
         char classeTexto[100];
+        char caminhoAbsolutoTexto[1000];
 
-        fscanf(sumario, "%s %s\n", caminhoTexto, classeTexto);
+        fscanf(sumario, "%s %s\n", caminhoRelativoTexto, classeTexto);
+
+        sprintf(caminhoAbsolutoTexto, "datasets/%s/%s", pasta_mae, caminhoRelativoTexto);
 
         //Le o texto do ciclo
-        FILE * texto;
+        FILE * texto = fopen(caminhoAbsolutoTexto, "r");
 
-        texto = fopen(caminhoTexto, "r");
+        while (!feof(texto)) {
 
-        //Salva palavras nos indices
+            //Teste leitura de palavras
+            char palavra[1000];
+
+            fscanf(texto, "%s", palavra);
+            printf("%s ", palavra);
+        }
+
+        fclose(texto);
     }
     
-
     fclose(sumario);
-
-    */
-
 }
