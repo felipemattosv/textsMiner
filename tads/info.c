@@ -1,4 +1,6 @@
 #include "info.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 struct info {
 
@@ -6,3 +8,8 @@ struct info {
     int freq;
     double tf_idf;
 };
+
+Info info_alocar() {
+
+    return calloc(1, sizeof(struct info));
+}
