@@ -17,7 +17,7 @@ int main(int argc, char * argv[]) {
 
     Indices indices = indices_create();
     
-    indices_lerSumario(indices, caminhoSumario);
+    indices = indices_lerSumario(indices, caminhoSumario);
 
     return 0;
 }

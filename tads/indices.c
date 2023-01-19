@@ -46,7 +46,21 @@ Indices indices_create() {
     return i;
 }
 
-void indices_lerSumario(Indices i, char * caminhoSumario) {
+Indices indices_realocar(Indices i) {
+
+    i->palavras_alocadas *= 2;
+
+    i->idxPalavras = (Palavra *)realloc(i->idxPalavras, i->palavras_alocadas * sizeof(Palavra));
+
+    for (int j = (i->palavras_alocadas/2); j<i->palavras_alocadas; j++) {
+
+        i->idxPalavras[j] = palavra_alocar();
+    }
+
+    return i;
+}
+
+Indices indices_lerSumario(Indices i, char * caminhoSumario) {
 
     FILE * sumario = fopen(caminhoSumario, "r");
 
@@ -66,7 +80,7 @@ void indices_lerSumario(Indices i, char * caminhoSumario) {
 
         FILE * texto = fopen(caminhoAbsolutoTexto, "r");
 
-        indices_lerTexto(i, texto); //passar classe do texto para indice de docs
+        i = indices_lerTexto(i, texto); //passar classe do texto para indice de docs
 
         //Registra passagem para novo texto
         i->numArqv++;
@@ -75,9 +89,11 @@ void indices_lerSumario(Indices i, char * caminhoSumario) {
     }
     
     fclose(sumario);
+
+    return i;
 }
 
-void indices_lerTexto(Indices i, FILE * texto) {
+Indices indices_lerTexto(Indices i, FILE * texto) {
 
     char word[100];
     int index;
@@ -95,7 +111,13 @@ void indices_lerTexto(Indices i, FILE * texto) {
 
         if(index == -1) {
 
-            //Adiciona palavra ao indice (palavras_usadas++) !!! Checar se precisa de Realloc
+            //Checa se precisa de Realloc
+            if (i->palavras_usadas == i->palavras_alocadas) {
+                
+                i = indices_realocar(i);
+            }
+
+            //Adiciona palavra ao indice
             RegistraPalavra(i, word);
             i->palavras_usadas++;
         }
@@ -106,6 +128,7 @@ void indices_lerTexto(Indices i, FILE * texto) {
         }
     }
 
+    return i;
 }
 
 int indicePalavra(char * w, Indices i) {

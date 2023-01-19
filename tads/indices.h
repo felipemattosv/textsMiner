@@ -6,9 +6,11 @@ typedef struct indices *Indices;
 
 Indices indices_create();
 
-void indices_lerSumario(Indices, char *);
+Indices indices_realocar(Indices);
 
-void indices_lerTexto(Indices, FILE *);
+Indices indices_lerSumario(Indices, char *);
+
+Indices indices_lerTexto(Indices, FILE *);
 
 int indicePalavra(char *, Indices);
 
