@@ -4,7 +4,7 @@
 
 struct info {
 
-    int pos;
+    int pos; //IdxPalavras: numero do documento
     int freq;
     double tf_idf;
 };
@@ -12,4 +12,14 @@ struct info {
 Info info_alocar() {
 
     return calloc(1, sizeof(struct info));
+}
+
+void info_setPos(Info inf, int numArqv) {
+
+    inf->pos = numArqv;
+}
+
+void info_setFreq(Info inf, int newFreq) {
+
+    inf->freq = newFreq;
 }
