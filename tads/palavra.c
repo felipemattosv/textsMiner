@@ -10,6 +10,7 @@ struct palavra {
     Info * metricas;
     int aparicoes; /*Salva a qtd de arquivos em que a palavra aparece!
                      (NAO a qtd que aparece em cada arquivo)*/
+    int arqvPassado; //Comentar!!
 };
 
 Palavra palavra_alocar() {
@@ -25,7 +26,9 @@ Palavra palavra_alocar() {
         p->metricas[j] = info_alocar();
     }
 
-    p->aparicoes=0;
+    p->aparicoes=-1;
+
+    p->arqvPassado=-1;
 
     return p;
 }
@@ -50,4 +53,41 @@ void palavra_setInfo(Palavra p, int numArqv, int newFreq) {
     info_setPos(p->metricas[p->aparicoes], numArqv);
 
     info_setFreq(p->metricas[p->aparicoes], newFreq);
+}
+
+void palavra_incrementaMetricas(Palavra p) {
+
+    int freqAntiga = info_retornaFreq(p->metricas[p->aparicoes]);
+
+    info_setFreq(p->metricas[p->aparicoes], (freqAntiga + 1));
+}
+
+int palavra_retornaFreq(Palavra p, int numArqv) {
+
+    return info_retornaFreq(p->metricas[numArqv]);
+}
+
+void palavra_setArqvPassado(Palavra p, int a) {
+
+    p->arqvPassado = a;
+}
+
+int palavra_retornaArqvPassado(Palavra p) {
+
+    return p->arqvPassado;
+}
+
+int palavra_retornaAparicoes(Palavra p) {
+
+    return p->aparicoes;
+}
+
+int palavra_retornaPos(Palavra p, int h) {
+
+    return info_retornaPos(p->metricas[h]);
+}
+
+void palavra_atualizaPos(Palavra p, int h) {
+
+    info_setPos(p->metricas[p->aparicoes], h);
 }

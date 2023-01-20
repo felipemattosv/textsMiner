@@ -19,5 +19,11 @@ int main(int argc, char * argv[]) {
     
     indices = indices_lerSumario(indices, caminhoSumario);
 
+    //indices_calculaTF_IDF();
+
+    //Indices_gerarRelatorioBin();
+
+    //indices_destroy();
+
     return 0;
 }

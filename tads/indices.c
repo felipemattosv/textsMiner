@@ -22,9 +22,7 @@ Indices indices_create() {
 
     Indices i = (Indices)calloc(1, sizeof(struct indices));
 
-    //cria idxPalavras
-    //atribui 'palavras_alocadas'
-    //atribui '0' para 'palavras_usadas'
+    //Palavras:
     i->idxPalavras = (Palavra *)calloc(100, sizeof(Palavra));
 
     for (int j=0; j<100; j++) {
@@ -35,7 +33,7 @@ Indices indices_create() {
     i->palavras_alocadas = 100;
     i->palavras_usadas = 0;
 
-    //Futuro:
+    //Documentos:
     //cria idxDocumentos
     //atribui 'documentos_alocados'
     //atribui '0' para 'documentos_usados'
@@ -122,9 +120,19 @@ Indices indices_lerTexto(Indices i, FILE * texto) {
             i->palavras_usadas++;
         }
         else {
+            
+            //Verifica se eh a 1a aparicao nesse texto
+            if(palavra_retornaArqvPassado(i->idxPalavras[index]) != i->numArqv) {
+
+                palavra_setArqvPassado(i->idxPalavras[index], i->numArqv);
+                palavra_incrementaAparicoes(i->idxPalavras[index]);
+
+                //Seta a posicao de p->metricas[p->aparicoes] como sendo o .txt atual
+                palavra_atualizaPos(i->idxPalavras[index], i->numArqv);
+            }
 
             //Aumenta frequencia da palavra no documento atual
-            
+            palavra_incrementaMetricas(i->idxPalavras[index]);
         }
     }
 
@@ -147,6 +155,8 @@ int indicePalavra(char * w, Indices i) {
 void RegistraPalavra(Indices i, char * w) {
 
     palavra_incrementaAparicoes(i->idxPalavras[i->palavras_usadas]);
+
+    palavra_setArqvPassado(i->idxPalavras[i->palavras_usadas], i->numArqv);
 
     palavra_setConteudo(i->idxPalavras[i->palavras_usadas], w);
 
