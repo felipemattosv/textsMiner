@@ -1,5 +1,6 @@
 #include "indices.h"
 #include "palavra.h"
+#include "documento.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -10,9 +11,9 @@ struct indices {
     int palavras_alocadas; //qtd de espacos alocados
     int palavras_usadas;   //qtd de espacos alocados usados
 
-    //Documento * idxDocumentos;
-    //int documentos_alocados;
-    //int documentos_usados;
+    Documento * idxDocumentos;
+    int documentos_alocados;
+    int documentos_usados;
 
     //Salva a posicao do arquivo atual no sumario
     int numArqv;
@@ -34,9 +35,15 @@ Indices indices_create() {
     i->palavras_usadas = 0;
 
     //Documentos:
-    //cria idxDocumentos
-    //atribui 'documentos_alocados'
-    //atribui '0' para 'documentos_usados'
+    i->idxDocumentos = (Documento *)calloc(100, sizeof(Documento));
+
+    for (int k=0; k<100; k++) {
+
+        i->idxDocumentos[k] = documento_alocar();
+    }
+    
+    i->documentos_alocados = 100;
+    i->documentos_usados = 0;
 
     //atribui '0' para numAqrv (inicio no primeiro arquivo listado em train.txt)
     i->numArqv = 0;
@@ -44,7 +51,7 @@ Indices indices_create() {
     return i;
 }
 
-Indices indices_realocar(Indices i) {
+Indices indices_realocarWordIndex(Indices i) {
 
     i->palavras_alocadas *= 2;
 
@@ -53,6 +60,20 @@ Indices indices_realocar(Indices i) {
     for (int j = (i->palavras_alocadas/2); j<i->palavras_alocadas; j++) {
 
         i->idxPalavras[j] = palavra_alocar();
+    }
+
+    return i;
+}
+
+Indices indices_realocarDocIndex(Indices i) {
+
+    i->documentos_alocados *= 2;
+
+    i->idxDocumentos = (Documento *)realloc(i->idxDocumentos, i->documentos_alocados * sizeof(Documento));
+
+    for (int j = (i->documentos_alocados/2); j<i->documentos_alocados; j++) {
+
+        i->idxDocumentos[j] = documento_alocar();
     }
 
     return i;
@@ -73,19 +94,18 @@ Indices indices_lerSumario(Indices i, char * caminhoSumario) {
         char caminhoAbsolutoTexto[1000];
 
         fscanf(sumario, "%s %s\n", caminhoRelativoTexto, classeTexto);
-
         sprintf(caminhoAbsolutoTexto, "datasets/%s/%s", pasta_mae, caminhoRelativoTexto);
-
         FILE * texto = fopen(caminhoAbsolutoTexto, "r");
+        
+        i = indices_lerTexto(i, texto);
 
-        i = indices_lerTexto(i, texto); //passar classe do texto para indice de docs
+        i = indices_docSetClasseENome(i, classeTexto, caminhoRelativoTexto);
 
         //Registra passagem para novo texto
         i->numArqv++;
 
         fclose(texto);
     }
-    
     fclose(sumario);
 
     return i;
@@ -112,7 +132,7 @@ Indices indices_lerTexto(Indices i, FILE * texto) {
             //Checa se precisa de Realloc
             if (i->palavras_usadas == i->palavras_alocadas) {
                 
-                i = indices_realocar(i);
+                i = indices_realocarWordIndex(i);
             }
 
             //Adiciona palavra ao indice
@@ -167,4 +187,46 @@ void RegistraPalavra(Indices i, char * w) {
     3: freq;
     */
     palavra_setInfo(i->idxPalavras[i->palavras_usadas], i->numArqv, 1);
+}
+
+Indices indices_docSetClasseENome(Indices i, char * classTxt, char * pathTxt) {
+
+    if (i->documentos_usados == i->documentos_alocados) {
+
+            i = indices_realocarDocIndex(i);
+    }
+    
+    documento_setClasse(i->idxDocumentos[i->numArqv], classTxt);
+        
+    char * nome_texto = strtok(pathTxt, "/");
+    nome_texto = strtok(NULL, ".");
+    sprintf(nome_texto, "%s.txt", nome_texto);
+    documento_setNome(i->idxDocumentos[i->numArqv], nome_texto);
+
+    return i;
+}
+
+void indices_gerarDocIndex(Indices i) {
+
+   for (int j=0; j < i->numArqv; j++) { //Loop que passa por todos documentos (ir setando 1 por 1)
+
+        for (int k=0; k<i->palavras_usadas; k++) { //Loop que passa por todas palavras do idxP
+
+            //Verificar se a palavra 'k' esta no doc 'j'
+            int h=0;
+            while(palavra_retornaPos(i->idxPalavras[k], h) <= j) { //Vai passando pelas 'h' posicoes do array metricas
+
+                if (palavra_retornaPos(i->idxPalavras[k], h) == j) { //Se achar a posicao procurada!
+
+                    documento_incrementaQtdPalavras(i->idxDocumentos[j]);
+                    
+                    documento_setInfo(i->idxDocumentos[j], k, palavra_retornaFreq(i->idxPalavras[k], j));
+
+                    break;
+                }
+
+                h++;
+            }            
+        }
+   }
 }

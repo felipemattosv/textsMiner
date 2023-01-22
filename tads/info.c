@@ -4,7 +4,7 @@
 
 struct info {
 
-    int pos; //numero do documento
+    int pos; // P/ as Palavras: num do doc ; P/ os Docs: num da palavra
     int freq;
     double tf_idf;
 };
