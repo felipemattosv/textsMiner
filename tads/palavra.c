@@ -8,6 +8,7 @@ struct palavra {
 
     char * conteudo;
     Info * metricas;
+    int metricas_alocadas;
     int aparicoes; /*Salva a qtd de arquivos em que a palavra aparece!
                      (NAO a qtd que aparece em cada arquivo)*/
     int arqvPassado; //Comentar!!
@@ -26,11 +27,32 @@ Palavra palavra_alocar() {
         p->metricas[j] = info_alocar();
     }
 
+    p->metricas_alocadas = 100;
+
     p->aparicoes=-1;
 
     p->arqvPassado=-1;
 
     return p;
+}
+
+Palavra palavra_realocar(Palavra p) {
+
+    p->metricas_alocadas *= 2;
+
+    p->metricas = (Info *)realloc(p->metricas, p->metricas_alocadas * sizeof(Info));
+
+    for (int k=(p->metricas_alocadas / 2); k<p->metricas_alocadas; k++) {
+
+        p->metricas[k] = info_alocar();
+    }
+
+    return p;
+}
+
+int palavra_retornaMetricasAlocadas(Palavra p) {
+
+    return p->metricas_alocadas;
 }
 
 char * palavra_retornaConteudo(Palavra p) {

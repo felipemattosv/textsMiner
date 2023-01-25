@@ -100,6 +100,7 @@ Indices indices_lerSumario(Indices i, char * caminhoSumario) {
         i = indices_lerTexto(i, texto);
 
         i = indices_docSetClasseENome(i, classeTexto, caminhoRelativoTexto);
+        i->documentos_usados++;
 
         //Registra passagem para novo texto
         i->numArqv++;
@@ -114,18 +115,12 @@ Indices indices_lerSumario(Indices i, char * caminhoSumario) {
 Indices indices_lerTexto(Indices i, FILE * texto) {
 
     char word[100];
-    int index;
 
     while (!feof(texto)) {
 
         fscanf(texto, "%s", word);
 
-        /*
-        indicePalavra() retorna:
-        - Caso a palavra ja esteja registrada: seu idx;
-        - Caso a palavra NAO esteja registrada: -1;
-        */
-        index = indicePalavra(word, i);
+        int index = indicePalavra(word, i);
 
         if(index == -1) {
 
@@ -135,8 +130,7 @@ Indices indices_lerTexto(Indices i, FILE * texto) {
                 i = indices_realocarWordIndex(i);
             }
 
-            //Adiciona palavra ao indice
-            RegistraPalavra(i, word);
+            RegistraPalavra(i, word); //Adiciona palavra ao indice
             i->palavras_usadas++;
         }
         else {
@@ -147,15 +141,17 @@ Indices indices_lerTexto(Indices i, FILE * texto) {
                 palavra_setArqvPassado(i->idxPalavras[index], i->numArqv);
                 palavra_incrementaAparicoes(i->idxPalavras[index]);
 
-                //Seta a posicao de p->metricas[p->aparicoes] como sendo o .txt atual
-                palavra_atualizaPos(i->idxPalavras[index], i->numArqv);
+                if (palavra_retornaAparicoes(i->idxPalavras[index]) == (palavra_retornaMetricasAlocadas(i->idxPalavras[index]) -1)) {
+
+                    i->idxPalavras[index] = palavra_realocar(i->idxPalavras[index]);
+                }
+
+                palavra_atualizaPos(i->idxPalavras[index], i->numArqv); //Seta a posicao de p->metricas[p->aparicoes] como sendo o .txt atual
             }
 
-            //Aumenta frequencia da palavra no documento atual
-            palavra_incrementaMetricas(i->idxPalavras[index]);
+            palavra_incrementaMetricas(i->idxPalavras[index]); //Aumenta frequencia da palavra no documento atual
         }
     }
-
     return i;
 }
 
@@ -222,4 +218,18 @@ Indices indices_gerarDocIndex(Indices i) {
     }
 
    return i;
+}
+
+//Testando:
+void indices_imprimeDocIndex(Indices i) {
+
+    printf("classe: %s\n\n", documento_retornaClasse(i->idxDocumentos[249]));
+
+    for (int k=0; k<7; k++) {
+
+        printf("POS DA PALAVRA NO IDX PALAVRAS: %d\n", documento_retornaPos(i->idxDocumentos[249], k));
+        printf("FREQ DA PALAVRA NO IDX PALAVRAS: %d\n", documento_retornaFreq(i->idxDocumentos[249], k));
+
+        printf("\n");
+    }
 }

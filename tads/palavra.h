@@ -4,6 +4,10 @@ typedef struct palavra *Palavra;
 
 Palavra palavra_alocar();
 
+Palavra palavra_realocar(Palavra);
+
+int palavra_retornaMetricasAlocadas(Palavra);
+
 char * palavra_retornaConteudo(Palavra);
 
 void palavra_destroy(Palavra);
