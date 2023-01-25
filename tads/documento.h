@@ -21,3 +21,11 @@ int documento_retornaQtdPalavras(Documento);
 int documento_retornaPos(Documento, int);
 
 int documento_retornaFreq(Documento, int);
+
+void documento_dobraMetricasAlocadas(Documento);
+
+int documento_retornaMetricasAlocadas(Documento);
+
+Documento documento_realocar(Documento);
+
+Documento RegistraPalavraNoDocumento(Documento, int, int);

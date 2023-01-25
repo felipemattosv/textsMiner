@@ -27,3 +27,5 @@ int palavra_retornaAparicoes(Palavra);
 int palavra_retornaPos(Palavra, int);
 
 void palavra_atualizaPos(Palavra, int);
+
+int palavra_indice_emMetricas(Palavra, int);

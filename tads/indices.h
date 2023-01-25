@@ -18,4 +18,7 @@ void RegistraPalavra(Indices, char *);
 
 Indices indices_docSetClasseENome(Indices, char *, char *);
 
-void indices_gerarDocIndex(Indices);
+Indices indices_gerarDocIndex(Indices);
+
+//Apenas para teste:
+void indices_imprimeDocIndex(Indices);

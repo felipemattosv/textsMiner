@@ -19,7 +19,7 @@ int main(int argc, char * argv[]) {
     
     indices = indices_lerSumario(indices, caminhoSumario);
 
-    indices_gerarDocIndex(indices);
+    indices = indices_gerarDocIndex(indices);
 
     //indices_calculaTF_IDF();
 

@@ -91,3 +91,16 @@ void palavra_atualizaPos(Palavra p, int h) {
 
     info_setPos(p->metricas[p->aparicoes], h);
 }
+
+int palavra_indice_emMetricas(Palavra p, int arq) {
+
+    for (int j=0; j <= p->aparicoes; j++) {
+
+        if (info_retornaPos(p->metricas[j]) == arq) {
+            
+            return j;
+        }
+    }
+
+    return -1;
+}

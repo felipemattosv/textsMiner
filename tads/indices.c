@@ -206,27 +206,20 @@ Indices indices_docSetClasseENome(Indices i, char * classTxt, char * pathTxt) {
     return i;
 }
 
-void indices_gerarDocIndex(Indices i) {
+Indices indices_gerarDocIndex(Indices i) {
 
-   for (int j=0; j < i->numArqv; j++) { //Loop que passa por todos documentos (ir setando 1 por 1)
+    for (int j=0; j < i->numArqv; j++) {
 
-        for (int k=0; k<i->palavras_usadas; k++) { //Loop que passa por todas palavras do idxP
+        for (int k=0; k < i->palavras_usadas; k++) {
 
-            //Verificar se a palavra 'k' esta no doc 'j'
-            int h=0;
-            while(palavra_retornaPos(i->idxPalavras[k], h) <= j) { //Vai passando pelas 'h' posicoes do array metricas
+            int index = palavra_indice_emMetricas(i->idxPalavras[k], j);
 
-                if (palavra_retornaPos(i->idxPalavras[k], h) == j) { //Se achar a posicao procurada!
+            if(index != -1) {
 
-                    documento_incrementaQtdPalavras(i->idxDocumentos[j]);
-                    
-                    documento_setInfo(i->idxDocumentos[j], k, palavra_retornaFreq(i->idxPalavras[k], j));
-
-                    break;
-                }
-
-                h++;
-            }            
+                i->idxDocumentos[j] = RegistraPalavraNoDocumento(i->idxDocumentos[j], k, palavra_retornaFreq(i->idxPalavras[k], index));
+            }
         }
-   }
+    }
+
+   return i;
 }
