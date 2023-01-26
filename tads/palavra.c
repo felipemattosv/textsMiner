@@ -126,3 +126,20 @@ int palavra_indice_emMetricas(Palavra p, int arq) {
 
     return -1;
 }
+
+void palavra_calculaTF_IDFs(Palavra p, double idf) {
+
+    for (int q=0; q < p->aparicoes; q++) {
+
+        int tf = info_retornaFreq(p->metricas[q]);
+
+        double TF_IDF = tf * idf;
+
+        info_setTF_IDF(p->metricas[q], TF_IDF);
+    }
+}
+
+double palavra_retornaTF_IDFs(Palavra p, int contMetricas) {
+
+    return info_retornaTF_IDF(p->metricas[contMetricas]);
+}

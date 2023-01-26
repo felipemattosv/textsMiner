@@ -33,3 +33,7 @@ int palavra_retornaPos(Palavra, int);
 void palavra_atualizaPos(Palavra, int);
 
 int palavra_indice_emMetricas(Palavra, int);
+
+void palavra_calculaTF_IDFs(Palavra, double);
+
+double palavra_retornaTF_IDFs(Palavra, int);

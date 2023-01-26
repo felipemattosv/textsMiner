@@ -21,7 +21,7 @@ int main(int argc, char * argv[]) {
 
     indices = indices_gerarDocIndex(indices);
 
-    //indices_calculaTF_IDF();
+    indices_calculaTF_IDFs(indices);
 
     //Indices_gerarRelatorioBin();
 

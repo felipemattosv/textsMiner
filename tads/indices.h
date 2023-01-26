@@ -20,5 +20,9 @@ Indices indices_docSetClasseENome(Indices, char *, char *);
 
 Indices indices_gerarDocIndex(Indices);
 
+void indices_calculaTF_IDFs(Indices);
+
+double CalculaIDF(int, int);
+
 //Apenas para teste:
 void indices_imprimeDocIndex(Indices);

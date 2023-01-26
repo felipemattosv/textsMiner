@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <math.h>
 
 struct indices {
 
@@ -232,4 +233,19 @@ void indices_imprimeDocIndex(Indices i) {
 
         printf("\n");
     }
+}
+
+void indices_calculaTF_IDFs(Indices i) {
+
+    for (int k=0; k < i->palavras_usadas; k++) {
+
+        double idf = CalculaIDF(i->numArqv, (palavra_retornaAparicoes(i->idxPalavras[k]) + 1));
+
+        palavra_calculaTF_IDFs(i->idxPalavras[k], idf);
+    }
+}
+
+double CalculaIDF(int n, int df) {
+
+    return log((double)(1 + n)/(1 + df)) + 1;
 }
