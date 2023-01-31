@@ -114,3 +114,15 @@ Documento RegistraPalavraNoDocumento(Documento d, int pos, int freq) {
 
     return d;
 }
+
+void documento_destroy(Documento d) {
+
+    for (int k=0; k<d->metricas_alocadas; k++) {
+
+        info_destroy(d->metricas[k]);
+    }
+
+    free(d->metricas);
+
+    free(d);
+}

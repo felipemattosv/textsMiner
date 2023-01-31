@@ -249,3 +249,22 @@ double CalculaIDF(int n, int df) {
 
     return log((double)(1 + n)/(1 + df)) + 1;
 }
+
+void indices_destroy(Indices i) {
+
+    for (int k=0; k<i->palavras_alocadas; k++) {
+
+        palavra_destroy(i->idxPalavras[k]);
+    }
+
+    free(i->idxPalavras);
+
+    for (int k=0; k<i->documentos_alocados; k++) {
+
+       documento_destroy(i->idxDocumentos[k]);
+    }
+
+    free(i->idxDocumentos);
+
+    free(i);
+}

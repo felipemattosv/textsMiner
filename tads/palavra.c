@@ -143,3 +143,17 @@ double palavra_retornaTF_IDFs(Palavra p, int contMetricas) {
 
     return info_retornaTF_IDF(p->metricas[contMetricas]);
 }
+
+void palavra_destroy(Palavra p) {
+
+    for (int k=0; k<p->metricas_alocadas; k++) {
+
+        info_destroy(p->metricas[k]);
+    }
+
+    free(p->metricas);
+
+    free(p->conteudo);
+
+    free(p);
+}

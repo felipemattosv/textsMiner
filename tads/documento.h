@@ -29,3 +29,5 @@ int documento_retornaMetricasAlocadas(Documento);
 Documento documento_realocar(Documento);
 
 Documento RegistraPalavraNoDocumento(Documento, int, int);
+
+void documento_destroy(Documento);

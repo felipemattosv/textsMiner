@@ -26,3 +26,5 @@ double CalculaIDF(int, int);
 
 //Apenas para teste:
 void indices_imprimeDocIndex(Indices);
+
+void indices_destroy(Indices);

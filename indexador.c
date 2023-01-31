@@ -25,7 +25,7 @@ int main(int argc, char * argv[]) {
 
     //Indices_gerarRelatorioBin();
 
-    //indices_destroy();
+    indices_destroy(indices);
 
     return 0;
 }

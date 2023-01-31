@@ -43,3 +43,8 @@ double info_retornaTF_IDF(Info inf) {
 
     return inf->tf_idf;
 }
+
+void info_destroy(Info inf) {
+
+    free(inf);
+}
