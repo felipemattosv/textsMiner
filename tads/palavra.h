@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 typedef struct palavra *Palavra;
 
 Palavra palavra_alocar();
@@ -37,3 +39,7 @@ int palavra_indice_emMetricas(Palavra, int);
 void palavra_calculaTF_IDFs(Palavra, double);
 
 double palavra_retornaTF_IDFs(Palavra, int);
+
+void palavra_imprimeBIN(Palavra, FILE *);
+
+Palavra palavra_lerBIN(Palavra, FILE *);

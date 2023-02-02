@@ -157,3 +157,49 @@ void palavra_destroy(Palavra p) {
 
     free(p);
 }
+
+void palavra_imprimeBIN(Palavra p, FILE * bin) {
+
+    int tamConteudo = (strlen(p->conteudo) + 1);
+    fwrite(&tamConteudo, sizeof(int), 1, bin);
+    fwrite(p->conteudo, tamConteudo, 1, bin);
+
+    int aparicoes = (p->aparicoes);
+    fwrite(&aparicoes, sizeof(int), 1, bin);
+    for (int k=0; k <= aparicoes; k++) {
+
+        info_imprimeBIN(p->metricas[k], bin);
+    }
+}
+
+Palavra palavra_lerBIN(Palavra p, FILE * bin) {
+
+    int tamConteudo=0;
+    fread(&tamConteudo, sizeof(int), 1, bin);
+    fread(p->conteudo, tamConteudo, 1, bin);
+
+    int aparicoes=0;
+    fread(&aparicoes, sizeof(int), 1, bin);
+    p->aparicoes = aparicoes + 1;
+    p->metricas_alocadas = aparicoes + 1;
+
+    //Atualizacao do tamanho do vetor de metricas
+    for (int x=0; x<100; x++) {
+
+        info_destroy(p->metricas[x]);
+    }
+    free(p->metricas);
+    p->metricas = (Info *)malloc(p->metricas_alocadas * sizeof(Info));
+
+    for (int k=0; k < p->metricas_alocadas; k++) {
+
+        p->metricas[k] = info_alocar();
+    }
+
+    for (int k=0; k < p->metricas_alocadas; k++) {
+
+        info_lerBIN(p->metricas[k], bin);
+    }
+
+    return p;
+}

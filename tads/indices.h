@@ -28,3 +28,11 @@ double CalculaIDF(int, int);
 void indices_imprimeDocIndex(Indices);
 
 void indices_destroy(Indices);
+
+void indices_imprimeEstatisticas(Indices);
+
+void indices_gerarRelatorioBin(Indices, char *);
+
+
+//Acontecera no Classificador.c(prox programa)
+Indices indices_lerBIN(Indices, char *);

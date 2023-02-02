@@ -126,3 +126,60 @@ void documento_destroy(Documento d) {
 
     free(d);
 }
+
+void documento_imprimeBIN(Documento d, FILE * bin) {
+
+    //Nome
+    int tamNome = (strlen(d->nome) + 1);
+    fwrite(&tamNome, sizeof(int), 1, bin);
+    fwrite(d->nome, tamNome, 1, bin);
+
+    //Classe
+    int tamClasse = (strlen(d->classe) + 1);
+    fwrite(&tamClasse, sizeof(int), 1, bin);
+    fwrite(d->classe, tamClasse, 1, bin);
+
+    //Metricas
+    int qtdPalavras = (d->qtdPalavras + 1);
+    fwrite(&qtdPalavras, sizeof(int), 1, bin);
+    for (int j=0; j < qtdPalavras; j++) {
+
+        info_imprimeBIN(d->metricas[j], bin);
+    }
+}
+
+Documento documento_lerBIN(Documento d, FILE * bin) {
+
+    int tamNome=0;
+    fread(&tamNome, sizeof(int), 1, bin);
+    fread(d->nome, tamNome, 1, bin);
+    
+    int tamClasse=0;
+    fread(&tamClasse, sizeof(int), 1, bin);
+    fread(d->classe, tamClasse, 1, bin);
+    
+    int qtdPalavras=0;
+    fread(&qtdPalavras, sizeof(int), 1, bin);
+    d->qtdPalavras = qtdPalavras;
+    d->metricas_alocadas = qtdPalavras;
+
+    for (int x=0; x<100; x++) {
+
+        info_destroy(d->metricas[x]);
+    }
+    free(d->metricas);
+
+    d->metricas = (Info *)calloc(qtdPalavras, sizeof(Info));
+
+    for (int q=0; q < qtdPalavras; q++) {
+
+        d->metricas[q] = info_alocar();
+    }
+
+    for (int j=0; j < qtdPalavras; j++) {
+
+        info_lerBIN(d->metricas[j], bin);
+    }
+
+    return d;
+}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdio.h>
+
 typedef struct documento *Documento;
 
 Documento documento_alocar();
@@ -31,3 +33,7 @@ Documento documento_realocar(Documento);
 Documento RegistraPalavraNoDocumento(Documento, int, int);
 
 void documento_destroy(Documento);
+
+void documento_imprimeBIN(Documento, FILE *);
+
+Documento documento_lerBIN(Documento, FILE *);

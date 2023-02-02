@@ -48,3 +48,21 @@ void info_destroy(Info inf) {
 
     free(inf);
 }
+
+void info_imprimeBIN(Info inf, FILE * bin) {
+
+    fwrite(&inf->pos, sizeof(int), 1, bin);
+
+    fwrite(&inf->freq, sizeof(int), 1, bin);
+    
+    fwrite(&inf->tf_idf, sizeof(double), 1, bin);
+}
+
+void info_lerBIN(Info inf, FILE * bin) {
+
+    fread(&inf->pos, sizeof(int), 1, bin);
+
+    fread(&inf->freq, sizeof(int), 1, bin);
+    
+    fread(&inf->tf_idf, sizeof(double), 1, bin);    
+}

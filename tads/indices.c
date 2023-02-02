@@ -268,3 +268,78 @@ void indices_destroy(Indices i) {
 
     free(i);
 }
+
+void indices_imprimeEstatisticas(Indices i) {
+
+    printf("Num. de palavras diferentes: %d\n", (i->palavras_usadas - 1));
+    printf("Num. de documentos: %d\n", i->documentos_usados);
+}
+
+void indices_gerarRelatorioBin(Indices i, char * caminhoBIN) {
+
+    FILE * bin = fopen(caminhoBIN, "w+b");
+
+    if (bin == NULL) {
+     
+        printf("ERRO! %s eh um caminho INVALIDO para o binario!\n", caminhoBIN);
+        exit(1);
+    }
+
+    //Imprime indice de palavras:
+    int qtdPalavras = (i->palavras_usadas - 1);
+    fwrite(&qtdPalavras, sizeof(int), 1, bin);
+
+    for (int k=0; k<i->palavras_usadas; k++) {
+
+        palavra_imprimeBIN(i->idxPalavras[k], bin);
+    }
+
+    //Imprime indice de documentos:
+    int qtdDocumentos = i->documentos_usados;
+    fwrite(&qtdDocumentos, sizeof(int), 1, bin);
+
+    for (int j=0; j<i->documentos_usados; j++) {
+
+        documento_imprimeBIN(i->idxDocumentos[j], bin);
+    }
+
+    fclose(bin);
+}
+
+//Leitura no classificador.c (proximo programa)
+Indices indices_lerBIN(Indices n, char * path) {
+
+    n = (Indices)calloc(1, sizeof(struct indices));
+
+    FILE * bin = fopen(path, "rb");
+
+    //Lendo palavras:
+    fread(&n->palavras_usadas, sizeof(int), 1, bin);
+
+    n->idxPalavras = (Palavra *)calloc(n->palavras_usadas, sizeof(Palavra));
+    n->palavras_alocadas = n->palavras_usadas;
+
+    for (int k=0; k <= n->palavras_usadas; k++) {
+
+        n->idxPalavras[k] = palavra_alocar();
+
+        n->idxPalavras[k] = palavra_lerBIN(n->idxPalavras[k], bin);
+    }
+
+    //Lendo documentos:
+    fread(&n->documentos_usados, sizeof(int), 1, bin);
+
+    n->idxDocumentos = (Documento *)calloc(n->documentos_usados, sizeof(Documento));
+    n->documentos_alocados = n->documentos_usados;
+
+    for (int j=0; j < n->documentos_usados; j++) {
+
+        n->idxDocumentos[j] = documento_alocar();
+
+        n->idxDocumentos[j] = documento_lerBIN(n->idxDocumentos[j], bin);
+    }
+
+    fclose(bin);
+
+    return n;
+}
