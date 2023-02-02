@@ -28,11 +28,11 @@ int main(int argc, char * argv[]) {
     
     indices = indices_lerSumario(indices, caminhoSumario);
 
-    indices = indices_alfabeticaWordIndex(indices);
-
     indices = indices_gerarDocIndex(indices);
 
     indices_calculaTF_IDFs(indices);
+
+    indices = indices_alfabeticaWordIndex(indices);
 
     indices_gerarRelatorioBin(indices, caminhoBIN);
 

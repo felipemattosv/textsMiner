@@ -286,7 +286,7 @@ void indices_gerarRelatorioBin(Indices i, char * caminhoBIN) {
     }
 
     //Imprime indice de palavras:
-    int qtdPalavras = (i->palavras_usadas - 1);
+    int qtdPalavras = (i->palavras_usadas);
     fwrite(&qtdPalavras, sizeof(int), 1, bin);
 
     for (int k=0; k<i->palavras_usadas; k++) {
@@ -319,7 +319,7 @@ Indices indices_lerBIN(Indices n, char * path) {
     n->idxPalavras = (Palavra *)calloc(n->palavras_usadas, sizeof(Palavra));
     n->palavras_alocadas = n->palavras_usadas;
 
-    for (int k=0; k <= n->palavras_usadas; k++) {
+    for (int k=0; k < n->palavras_usadas; k++) {
 
         n->idxPalavras[k] = palavra_alocar();
 
@@ -332,7 +332,7 @@ Indices indices_lerBIN(Indices n, char * path) {
     n->idxDocumentos = (Documento *)calloc(n->documentos_usados, sizeof(Documento));
     n->documentos_alocados = n->documentos_usados;
 
-    for (int j=0; j < n->documentos_usados; j++) {
+    for (int j=0; j<n->documentos_usados; j++) {
 
         n->idxDocumentos[j] = documento_alocar();
 

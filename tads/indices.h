@@ -35,4 +35,4 @@ void indices_gerarRelatorioBin(Indices, char *);
 
 Indices indices_lerBIN(Indices, char *);
 
-Indices indices_alfabeticaWordIndex(Indices i);
+Indices indices_alfabeticaWordIndex(Indices);

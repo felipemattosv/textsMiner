@@ -44,6 +44,6 @@ void palavra_imprimeBIN(Palavra, FILE *);
 
 Palavra palavra_lerBIN(Palavra, FILE *);
 
-Palavra * palavras_ordemAlfabetica(Palavra * idxP, int tam);
+Palavra * palavras_ordemAlfabetica(Palavra *, int);
 
-int ConteudoCompara(const void *s1, const void *s2);
+int ConteudoCompara(const void *, const void *);
