@@ -6,7 +6,7 @@
 
 struct palavra {
 
-    char * conteudo;
+    char conteudo[100];
     Info * metricas;
     int metricas_alocadas;
     int aparicoes; /*Salva a qtd de arquivos em que a palavra aparece!
@@ -18,7 +18,7 @@ Palavra palavra_alocar() {
 
     Palavra p = (Palavra)calloc(1, sizeof(struct palavra));
 
-    p->conteudo = (char *)calloc(100, sizeof(char));
+    //p->conteudo = (char *)calloc(100, sizeof(char));
     
     p->metricas = (Info *)calloc(100, sizeof(Info));
 
@@ -153,8 +153,6 @@ void palavra_destroy(Palavra p) {
 
     free(p->metricas);
 
-    free(p->conteudo);
-
     free(p);
 }
 
@@ -202,4 +200,16 @@ Palavra palavra_lerBIN(Palavra p, FILE * bin) {
     }
 
     return p;
+}
+
+Palavra * palavras_ordemAlfabetica(Palavra * idxP, int tam) {
+
+    qsort(idxP, tam, sizeof(char *), ConteudoCompara);
+
+    return idxP;
+}
+
+int ConteudoCompara(const void *s1, const void *s2) {
+
+    return strcmp(*(char **)s1, *(char **)s2);
 }

@@ -343,3 +343,10 @@ Indices indices_lerBIN(Indices n, char * path) {
 
     return n;
 }
+
+Indices indices_alfabeticaWordIndex(Indices i) {
+
+    i->idxPalavras = palavras_ordemAlfabetica(i->idxPalavras, i->palavras_usadas - 1);
+
+    return i;
+}

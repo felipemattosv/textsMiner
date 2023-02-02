@@ -33,6 +33,6 @@ void indices_imprimeEstatisticas(Indices);
 
 void indices_gerarRelatorioBin(Indices, char *);
 
-
-//Acontecera no Classificador.c(prox programa)
 Indices indices_lerBIN(Indices, char *);
+
+Indices indices_alfabeticaWordIndex(Indices i);

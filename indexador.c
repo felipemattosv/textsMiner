@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include "tads/palavra.h"
-#include "tads/indices.h"
 #include <stdlib.h>
+#include "tads/indices.h"
 
 int main(int argc, char * argv[]) {
     
@@ -29,6 +28,8 @@ int main(int argc, char * argv[]) {
     
     indices = indices_lerSumario(indices, caminhoSumario);
 
+    indices = indices_alfabeticaWordIndex(indices);
+
     indices = indices_gerarDocIndex(indices);
 
     indices_calculaTF_IDFs(indices);
@@ -38,11 +39,6 @@ int main(int argc, char * argv[]) {
     indices_imprimeEstatisticas(indices);
 
     indices_destroy(indices);
-
-    //No programa 2:
-    //Indices next = indices_lerBIN(next, caminhoBIN);
-
-    //indices_destroy(next);
-
+    
     return 0;
 }
