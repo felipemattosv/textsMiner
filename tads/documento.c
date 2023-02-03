@@ -9,8 +9,10 @@ struct documento {
     char nome[100];
     char classe[100];
     Info * metricas;
-    int qtdPalavras;
+    int qtdPalavras; //qtd de palavras diferentes
     int metricas_alocadas;
+
+    int tam; //total de palavras
 };
 
 Documento documento_alocar() {
@@ -27,6 +29,8 @@ Documento documento_alocar() {
     d->qtdPalavras = -1;
 
     d->metricas_alocadas = 100;
+
+    d->tam = 0; 
 
     return d;
 }
@@ -146,6 +150,9 @@ void documento_imprimeBIN(Documento d, FILE * bin) {
 
         info_imprimeBIN(d->metricas[j], bin);
     }
+
+    int tam = d->tam;
+    fwrite(&tam, sizeof(int), 1, bin);
 }
 
 Documento documento_lerBIN(Documento d, FILE * bin) {
@@ -181,5 +188,17 @@ Documento documento_lerBIN(Documento d, FILE * bin) {
         info_lerBIN(d->metricas[j], bin);
     }
 
+    fread(&d->tam, sizeof(int), 1, bin);
+
     return d;
+}
+
+void documento_incrementaTamanho(Documento d) {
+
+    d->tam++;
+}
+
+int documento_retornaTamanho(Documento d) {
+
+    return d->tam;
 }

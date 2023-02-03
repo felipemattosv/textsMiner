@@ -36,3 +36,9 @@ void indices_gerarRelatorioBin(Indices, char *);
 Indices indices_lerBIN(Indices, char *);
 
 Indices indices_alfabeticaWordIndex(Indices);
+
+void indices_relatorioDocumentos(Indices);
+
+int docIndex_ordenaDecrescenteTamanho(const void *, const void *);
+
+int docIndex_ordenaCrescenteTamanho(const void *, const void *);

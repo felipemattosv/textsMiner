@@ -37,3 +37,7 @@ void documento_destroy(Documento);
 void documento_imprimeBIN(Documento, FILE *);
 
 Documento documento_lerBIN(Documento, FILE *);
+
+void documento_incrementaTamanho(Documento);
+
+int documento_retornaTamanho(Documento);

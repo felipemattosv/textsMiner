@@ -121,6 +121,8 @@ Indices indices_lerTexto(Indices i, FILE * texto) {
 
         fscanf(texto, "%s", word);
 
+        documento_incrementaTamanho(i->idxDocumentos[i->numArqv]);
+
         int index = indicePalavra(word, i);
 
         if(index == -1) {
@@ -349,4 +351,45 @@ Indices indices_alfabeticaWordIndex(Indices i) {
     i->idxPalavras = palavras_ordemAlfabetica(i->idxPalavras, i->palavras_usadas - 1);
 
     return i;
+}
+
+void indices_relatorioDocumentos(Indices i) {
+
+    qsort(i->idxDocumentos, i->documentos_usados, sizeof(Documento), docIndex_ordenaDecrescenteTamanho); 
+
+    printf("10 Documentos mais longos:\n");
+    for (int j=0; j<10; j++) {
+
+        printf("Nome: %s", documento_retornaNome(i->idxDocumentos[j]));
+        printf(" | Classe: %s", documento_retornaClasse(i->idxDocumentos[j]));
+        printf(" | Tamanho: %d\n", documento_retornaTamanho(i->idxDocumentos[j]));
+    }
+
+    printf("\n");
+
+    qsort(i->idxDocumentos, i->documentos_usados, sizeof(Documento), docIndex_ordenaCrescenteTamanho);
+
+    printf("10 Documentos mais curtos:\n");
+    for (int j=0; j<10; j++) {
+
+        printf("Nome: %s", documento_retornaNome(i->idxDocumentos[j]));
+        printf(" | Classe: %s", documento_retornaClasse(i->idxDocumentos[j]));
+        printf(" | Tamanho: %d\n", documento_retornaTamanho(i->idxDocumentos[j]));
+    } 
+}
+
+int docIndex_ordenaDecrescenteTamanho(const void *d1, const void *d2) {
+
+    Documento doc1 = *(Documento *)d1;
+    Documento doc2 = *(Documento *)d2;
+
+    return (documento_retornaTamanho(doc2) - documento_retornaTamanho(doc1));
+}
+
+int docIndex_ordenaCrescenteTamanho(const void *d1, const void *d2) {
+
+    Documento doc1 = *(Documento *)d1;
+    Documento doc2 = *(Documento *)d2;
+
+    return (documento_retornaTamanho(doc1) - documento_retornaTamanho(doc2));
 }
