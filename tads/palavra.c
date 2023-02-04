@@ -216,17 +216,15 @@ int ConteudoCompara(const void *s1, const void *s2) {
 
 Palavra palavra_ordenaMetricas(Palavra p) {
 
-    qsort(p->metricas, p->aparicoes, sizeof(int), PosCompara);
+    qsort(p->metricas, p->aparicoes, sizeof(Info), FreqCompara);
 
     return p;
 }
 
-int PosCompara(const void *p1, const void *p2) {
+int FreqCompara(const void *p1, const void *p2) {
 
-    Info i1 = (Info)p1;
-    Info i2 = (Info)p2;
+    Info i1 = *(Info*)p1;
+    Info i2 = *(Info*)p2;
 
-    printf("%d\n", info_retornaPos(i1));
-
-    return (info_retornaPos(i1) - info_retornaPos(i2));
+    return (info_retornaFreq(i1) - info_retornaFreq(i2)); 
 }

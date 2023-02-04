@@ -54,3 +54,5 @@ Palavra * RetornaPonteiroPalavra(Indices, char *);
 Documento CriaDocumentoClassificador(Indices, Documento);
 
 void indices_classificarNoticias(Indices, int);
+
+void indices_relatorioPalavra(Indices);

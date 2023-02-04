@@ -99,9 +99,11 @@ Indices indices_lerSumario(Indices i, char * caminhoSumario) {
         sprintf(caminhoAbsolutoTexto, "datasets/%s/%s", pasta_mae, caminhoRelativoTexto);
         FILE * texto = fopen(caminhoAbsolutoTexto, "r");
         
+        i = indices_docSetClasseENome(i, classeTexto, caminhoRelativoTexto);
+
         i = indices_lerTexto(i, texto);
 
-        i = indices_docSetClasseENome(i, classeTexto, caminhoRelativoTexto);
+        //i = indices_docSetClasseENome(i, classeTexto, caminhoRelativoTexto);
         i->documentos_usados++;
 
         //Registra passagem para novo texto
@@ -471,17 +473,7 @@ int ComparaSomaTF_IDF(const void *d1, const void *d2) {
     Documento doc1 = *(Documento *)d1;
     Documento doc2 = *(Documento *)d2;
 
-    if (documento_retornaSomaTF_IDF(doc1) > documento_retornaSomaTF_IDF(doc2)) {
-
-        return -1;
-    }
-
-    else if (documento_retornaSomaTF_IDF(doc1) < documento_retornaSomaTF_IDF(doc2)) {
-
-        return 1;
-    }
-
-    else return 0;
+    return (int)(documento_retornaSomaTF_IDF(doc1) - documento_retornaSomaTF_IDF(doc2));
 }
 
 Palavra * RetornaPonteiroPalavra(Indices i, char * str) {
@@ -547,4 +539,28 @@ Documento CriaDocumentoClassificador(Indices i, Documento d) {
     documento_incrementaQtdPalavras(d);
 
     return d;
+}
+
+void indices_relatorioPalavra(Indices i) {
+
+    char str[99];
+    printf("Digite a palavra:\n");
+    scanf("%s", str);
+
+    int index=0, qtd=0;
+    Palavra * alvo = RetornaPonteiroPalavra(i, str);
+
+    if (alvo != NULL) {
+
+        index = alvo - i->idxPalavras;
+
+        printf("Aparece em %d noticias;\n", palavra_retornaAparicoes(i->idxPalavras[index]));
+
+        i->idxPalavras[index] = palavra_ordenaMetricas(i->idxPalavras[index]);
+
+        if (palavra_retornaAparicoes(i->idxPalavras[index]) > 10) qtd = 10;
+        else qtd = palavra_retornaAparicoes(i->idxPalavras[index]);
+    }
+
+    else printf("Palavra '%s' nao encontrada!\n", str);
 }

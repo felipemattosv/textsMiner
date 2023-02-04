@@ -68,7 +68,7 @@ void buscador_menu(Indices i, int k) {
                 break;
 
             case RELATORIO_WORD:
-                //indices_relatorioPalavra(i);
+                indices_relatorioPalavra(i);
                 break;
 
             case RELATORIO_DOCS:

@@ -50,4 +50,4 @@ int ConteudoCompara(const void *, const void *);
 
 Palavra palavra_ordenaMetricas(Palavra);
 
-int PosCompara(const void *, const void *);
+int FreqCompara(const void *, const void *);

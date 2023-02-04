@@ -1,16 +1,18 @@
-all: main
+all: full
 
-CC = clang
-override CFLAGS += -g -Wno-everything -pthread -lm
+%.o: %.c %.h
+	gcc -c $< -o $@
 
-SRCS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.c' -print)
-HEADERS = $(shell find . -name '.ccls-cache' -type d -prune -o -type f -name '*.h' -print)
+libtads.a: tads/documento.o tads/indices.o tads/palavra.o tads/info.o
+	ar -crs libtads.a tads/documento.o tads/indices.o tads/palavra.o tads/info.o
 
-main: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) $(SRCS) -o "$@"
-
-main-debug: $(SRCS) $(HEADERS)
-	$(CC) $(CFLAGS) -O0 $(SRCS) -o "$@"
+full: indexador.c main.c libtads.a
+	@gcc -L. indexador.c -o indexador  -I tads -ltads  -lm
+	@gcc -L. main.c -o main  -I tads -ltads  -lm
 
 clean:
-	rm -f main main-debug
+	@rm -f main libtads tads.a tads/*.o *.o
+prog1:
+	@./indexador datasets/tiny/train.txt indice.bin
+prog2:
+	@./main indice.bin 10
