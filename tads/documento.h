@@ -45,3 +45,7 @@ int documento_retornaTamanho(Documento);
 void documento_setSomaTF_IDF(Documento, double);
 
 double documento_retornaSomaTF_IDF(Documento);
+
+void documento_incrementaFreq(Documento, int);
+
+int RetornaIndiceMetricas(int, Documento);

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdio.h>
+#include "palavra.h"
+#include "documento.h"
 
 typedef struct indices *Indices;
 
@@ -46,3 +48,9 @@ int docIndex_ordenaCrescenteTamanho(const void *, const void *);
 void indices_buscarNoticias(Indices);
 
 int ComparaSomaTF_IDF(const void *, const void *);
+
+Palavra * RetornaPonteiroPalavra(Indices, char *);
+
+Documento CriaDocumentoClassificador(Indices, Documento);
+
+void indices_classificarNoticias(Indices, int);

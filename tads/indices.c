@@ -416,10 +416,7 @@ void indices_buscarNoticias(Indices i) {
         scanf("%s", str);
         
         // Caso 'str' esteja no idxPalavras, ...
-        Palavra buscada = palavra_alocar();
-        palavra_setConteudo(buscada, str);
-        alvo = (Palavra *)bsearch(&buscada, i->idxPalavras, i->palavras_usadas, sizeof(Palavra), ConteudoCompara);
-        palavra_destroy(buscada);
+        alvo = RetornaPonteiroPalavra(i, str);
 
         if (alvo != NULL) {
         // ... salvo o indice de 'str' (no idxPalavras) no vetor 'indicesPalavrasEncontradas'
@@ -485,4 +482,69 @@ int ComparaSomaTF_IDF(const void *d1, const void *d2) {
     }
 
     else return 0;
+}
+
+Palavra * RetornaPonteiroPalavra(Indices i, char * str) {
+
+    Palavra * alvo=0;
+
+    Palavra buscada = palavra_alocar();
+    palavra_setConteudo(buscada, str);
+    alvo = (Palavra *)bsearch(&buscada, i->idxPalavras, i->palavras_usadas, sizeof(Palavra), ConteudoCompara);
+    palavra_destroy(buscada);
+
+    return alvo;
+}
+
+void indices_classificarNoticias(Indices i, int k) {
+
+    Documento docDigitado = documento_alocar();
+    
+    docDigitado = CriaDocumentoClassificador(i, docDigitado);
+
+    
+
+    
+
+    documento_destroy(docDigitado);
+}
+
+Documento CriaDocumentoClassificador(Indices i, Documento d) {
+
+    char c='0', str[99];
+    Palavra * alvo;
+    int ind=0;
+
+    while (c != '\n') {
+
+        scanf("%s", str);
+
+        alvo = RetornaPonteiroPalavra(i, str);
+
+        if (alvo != NULL) {
+
+            ind = (alvo - i->idxPalavras);
+
+            int index = RetornaIndiceMetricas(ind, d);
+
+            if (index == -1) {
+                
+                //Registra palavra 
+                documento_incrementaQtdPalavras(d);
+                
+                if (documento_retornaQtdPalavras(d) == documento_retornaMetricasAlocadas(d)) documento_realocar(d);
+                
+                documento_setInfo(d, ind, 1);
+            }
+            else {
+                //Incrementa metricas da palavra
+                documento_incrementaFreq(d, index);
+            }
+        }
+
+        scanf("%c", &c);
+    }
+    documento_incrementaQtdPalavras(d);
+
+    return d;
 }

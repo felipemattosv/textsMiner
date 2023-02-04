@@ -3,6 +3,7 @@
         "info.h": "c",
         "palavra.h": "c",
         "stdio.h": "c",
-        "indices.h": "c"
+        "indices.h": "c",
+        "stdlib.h": "c"
     }
 }

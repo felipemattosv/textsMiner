@@ -11,7 +11,7 @@ struct info {
 
 Info info_alocar() {
 
-    return (Info)calloc(1, sizeof(struct info));
+    return (Info)malloc(1 * sizeof(struct info));
 }
 
 void info_setPos(Info inf, int numArqv) {

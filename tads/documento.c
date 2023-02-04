@@ -216,3 +216,21 @@ double documento_retornaSomaTF_IDF(Documento d) {
 
     return d->somaTF_IDF;
 }
+
+void documento_incrementaFreq(Documento d, int index) {
+
+    info_setFreq(d->metricas[index], (documento_retornaFreq(d, index) + 1));
+}
+
+int RetornaIndiceMetricas(int ind, Documento d) {
+
+    for (int g=0; g <= documento_retornaQtdPalavras(d); g++) {
+
+        if (documento_retornaPos(d, g) == ind) {
+         
+            return g;
+        }
+    }
+
+    return -1;
+}

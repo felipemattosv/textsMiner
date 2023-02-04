@@ -10,7 +10,7 @@
 #define RELATORIO_WORD 3
 #define RELATORIO_DOCS 4
 
-void buscador_menu(Indices);
+void buscador_menu(Indices, int);
 void menu_imprimir();
 
 int main(int argc, char * argv[]) {
@@ -37,14 +37,14 @@ int main(int argc, char * argv[]) {
 
     Indices indices = indices_lerBIN(indices, caminhoBIN);
 
-    buscador_menu(indices);
+    buscador_menu(indices, k);
 
     indices_destroy(indices);
 
     return 0;
 }
 
-void buscador_menu(Indices i) {
+void buscador_menu(Indices i, int k) {
 
     int op=-1, encerrar=0;
 
@@ -64,7 +64,7 @@ void buscador_menu(Indices i) {
                 break;
 
             case CLASSIFICAR:
-                //indices_classificarNoticias(i);
+                indices_classificarNoticias(i, k);
                 break;
 
             case RELATORIO_WORD:
