@@ -47,3 +47,7 @@ Palavra palavra_lerBIN(Palavra, FILE *);
 Palavra * palavras_ordemAlfabetica(Palavra *, int);
 
 int ConteudoCompara(const void *, const void *);
+
+Palavra palavra_ordenaMetricas(Palavra);
+
+int PosCompara(const void *, const void *);

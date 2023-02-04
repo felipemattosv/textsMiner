@@ -41,3 +41,7 @@ Documento documento_lerBIN(Documento, FILE *);
 void documento_incrementaTamanho(Documento);
 
 int documento_retornaTamanho(Documento);
+
+void documento_setSomaTF_IDF(Documento, double);
+
+double documento_retornaSomaTF_IDF(Documento);

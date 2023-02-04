@@ -42,3 +42,7 @@ void indices_relatorioDocumentos(Indices);
 int docIndex_ordenaDecrescenteTamanho(const void *, const void *);
 
 int docIndex_ordenaCrescenteTamanho(const void *, const void *);
+
+void indices_buscarNoticias(Indices);
+
+int ComparaSomaTF_IDF(const void *, const void *);

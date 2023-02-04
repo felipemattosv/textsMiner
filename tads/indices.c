@@ -1,6 +1,7 @@
 #include "indices.h"
 #include "palavra.h"
 #include "documento.h"
+#include "info.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -315,6 +316,12 @@ Indices indices_lerBIN(Indices n, char * path) {
 
     FILE * bin = fopen(path, "rb");
 
+    if (bin == NULL) {
+
+        printf("Binario nao encontrado em: '%s'!\n", path);
+        exit(1);
+    }
+
     //Lendo palavras:
     fread(&n->palavras_usadas, sizeof(int), 1, bin);
 
@@ -392,4 +399,90 @@ int docIndex_ordenaCrescenteTamanho(const void *d1, const void *d2) {
     Documento doc2 = *(Documento *)d2;
 
     return (documento_retornaTamanho(doc1) - documento_retornaTamanho(doc2));
+}
+
+void indices_buscarNoticias(Indices i) {
+
+    char c='0';
+    char str[99];
+
+    int * indicesPalavrasEncontradas = (int *)calloc(100, sizeof(int));
+    int qtdIndices_u=0, qtdIndices_a=100;    
+    Palavra * alvo=0;
+
+    //Loop de leitura
+    while (c != '\n') {
+
+        scanf("%s", str);
+        
+        // Caso 'str' esteja no idxPalavras, ...
+        Palavra buscada = palavra_alocar();
+        palavra_setConteudo(buscada, str);
+        alvo = (Palavra *)bsearch(&buscada, i->idxPalavras, i->palavras_usadas, sizeof(Palavra), ConteudoCompara);
+        palavra_destroy(buscada);
+
+        if (alvo != NULL) {
+        // ... salvo o indice de 'str' (no idxPalavras) no vetor 'indicesPalavrasEncontradas'
+        
+            if (qtdIndices_u == qtdIndices_a) {
+
+                qtdIndices_a *= 2;
+                indicesPalavrasEncontradas = (int *)realloc(indicesPalavrasEncontradas, qtdIndices_a * sizeof(int));
+            }
+
+            indicesPalavrasEncontradas[qtdIndices_u] = (alvo - i->idxPalavras);
+            qtdIndices_u++;
+        }
+
+        scanf("%c", &c);
+    }
+
+    //Somar o tf-idf para cada documento
+    for (int j=0; j < i->documentos_usados; j++) {
+
+        double soma=0.0;
+
+        for (int y=0; y < qtdIndices_u; y++) {
+            
+            for (int z=0; z < palavra_retornaAparicoes(i->idxPalavras[indicesPalavrasEncontradas[y]]); z++) {
+
+                if (j == palavra_retornaPos(i->idxPalavras[indicesPalavrasEncontradas[y]], z)) {
+
+                    soma += palavra_retornaTF_IDFs(i->idxPalavras[indicesPalavrasEncontradas[y]], z);
+                }
+            }
+            
+        }
+
+        documento_setSomaTF_IDF(i->idxDocumentos[j], soma);
+    }
+    
+    qsort(i->idxDocumentos, i->documentos_usados, sizeof(Documento), ComparaSomaTF_IDF);
+
+    for (int n=0; n < 10; n++) {
+
+        printf("Nome: %s", documento_retornaNome(i->idxDocumentos[n]));
+        printf(" | Soma TF-IDFs: %lf\n", documento_retornaSomaTF_IDF(i->idxDocumentos[n]));
+    }
+
+    
+    free(indicesPalavrasEncontradas);
+}
+
+int ComparaSomaTF_IDF(const void *d1, const void *d2) {
+
+    Documento doc1 = *(Documento *)d1;
+    Documento doc2 = *(Documento *)d2;
+
+    if (documento_retornaSomaTF_IDF(doc1) > documento_retornaSomaTF_IDF(doc2)) {
+
+        return -1;
+    }
+
+    else if (documento_retornaSomaTF_IDF(doc1) < documento_retornaSomaTF_IDF(doc2)) {
+
+        return 1;
+    }
+
+    else return 0;
 }

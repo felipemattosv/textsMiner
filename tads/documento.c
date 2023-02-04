@@ -13,6 +13,8 @@ struct documento {
     int metricas_alocadas;
 
     int tam; //total de palavras
+
+    double somaTF_IDF; //no programa 2: Buscador: Soma dos tf-idfs
 };
 
 Documento documento_alocar() {
@@ -31,6 +33,8 @@ Documento documento_alocar() {
     d->metricas_alocadas = 100;
 
     d->tam = 0; 
+
+    d->somaTF_IDF = 0.0;
 
     return d;
 }
@@ -201,4 +205,14 @@ void documento_incrementaTamanho(Documento d) {
 int documento_retornaTamanho(Documento d) {
 
     return d->tam;
+}
+
+void documento_setSomaTF_IDF(Documento d, double v) {
+
+    d->somaTF_IDF = v;
+}
+
+double documento_retornaSomaTF_IDF(Documento d) {
+
+    return d->somaTF_IDF;
 }

@@ -60,7 +60,7 @@ void buscador_menu(Indices i) {
                 break;
 
             case BUSCAR:
-                //indices_buscarNoticias(i);
+                indices_buscarNoticias(i);
                 break;
 
             case CLASSIFICAR:
